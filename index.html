@@ -108,8 +108,13 @@
         .hero {
             margin-top: 80px;
             padding: 8rem 3rem;
-            background: linear-gradient(135deg, #fef4f1 0%, #fff 100%);
+            background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.5)), url('image/u7845459758_warm_sunlight_filtering_through_trees_people_hold_838d51f2-d57b-4f19-bad8-89f37b067736_1 (1).png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             text-align: center;
+            position: relative;
+            transition: opacity 0.1s ease-out;
         }
         
         .hero-content {
@@ -1436,16 +1441,32 @@
         // 네비게이션 스크롤 효과
         let lastScroll = 0;
         const nav = document.querySelector('nav');
-        
+        const hero = document.querySelector('.hero');
+
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
-            
+
+            // 네비게이션 그림자 효과
             if (currentScroll > 100) {
                 nav.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.08)';
             } else {
                 nav.style.boxShadow = 'none';
             }
-            
+
+            // 히어로 섹션 페이드아웃 효과
+            const heroHeight = hero.offsetHeight;
+            const fadeStart = 0;
+            const fadeEnd = heroHeight * 0.8; // 히어로 섹션의 80% 지점에서 완전히 사라짐
+
+            if (currentScroll <= fadeStart) {
+                hero.style.opacity = '1';
+            } else if (currentScroll >= fadeEnd) {
+                hero.style.opacity = '0';
+            } else {
+                const fadeProgress = (currentScroll - fadeStart) / (fadeEnd - fadeStart);
+                hero.style.opacity = (1 - fadeProgress).toString();
+            }
+
             lastScroll = currentScroll;
         });
         
